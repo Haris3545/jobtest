@@ -56,6 +56,11 @@ Vercel CLI/token needed):
 4. Under **Environment Variables**, add:
    - `DATABASE_URL` — the Neon connection string from step 1
    - `ANTHROPIC_API_KEY` — from console.anthropic.com
+   - `ANTHROPIC_WORKSPACE_ID` — only if your API key is "identity-linked"
+     (issued from a Console account tied to an organization). If so, AI
+     features fail with a 400 asking for `anthropic-workspace-id` until this
+     is set — find it in the Console under the workspace the key acts in
+     (starts with `wksp_`). Skip this if you're using a plain workspace key.
    - `TAVILY_API_KEY` — from tavily.com
    - (optional) `RESEND_API_KEY` / `REMINDER_EMAIL_TO` if you wire up email
      reminders later

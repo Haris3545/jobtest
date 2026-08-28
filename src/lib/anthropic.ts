@@ -8,7 +8,16 @@ function getClient(): Anthropic {
       "ANTHROPIC_API_KEY is not set. Add it to your environment to use AI features."
     );
   }
-  if (!client) client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  if (!client) {
+    // Identity-linked API keys (issued from a Console account tied to an
+    // organization, as opposed to a plain workspace API key) require this
+    // header on every request or the API rejects it with a 400.
+    const workspaceId = process.env.ANTHROPIC_WORKSPACE_ID;
+    client = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+      defaultHeaders: workspaceId ? { "anthropic-workspace-id": workspaceId } : undefined,
+    });
+  }
   return client;
 }
 
@@ -20,14 +29,26 @@ export async function askClaude(params: {
   maxTokens?: number;
 }): Promise<string> {
   const anthropic = getClient();
-  const message = await anthropic.messages.create({
-    model: MODEL,
-    max_tokens: params.maxTokens ?? 2048,
-    system: params.system,
-    messages: [{ role: "user", content: params.prompt }],
-  });
-  const block = message.content[0];
-  return block.type === "text" ? block.text : "";
+  try {
+    const message = await anthropic.messages.create({
+      model: MODEL,
+      max_tokens: params.maxTokens ?? 2048,
+      system: params.system,
+      messages: [{ role: "user", content: params.prompt }],
+    });
+    const block = message.content[0];
+    return block.type === "text" ? block.text : "";
+  } catch (err) {
+    const raw = err instanceof Error ? err.message : String(err);
+    if (raw.includes("anthropic-workspace-id")) {
+      throw new Error(
+        "This ANTHROPIC_API_KEY is an identity-linked key and needs a workspace ID too. " +
+          "In the Anthropic Console, open the workspace this key should act in and copy its ID " +
+          "(starts with wksp_), then set ANTHROPIC_WORKSPACE_ID to it alongside ANTHROPIC_API_KEY."
+      );
+    }
+    throw err;
+  }
 }
 
 /** Ask Claude for strict JSON and parse it, stripping any markdown fencing. */
