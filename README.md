@@ -18,15 +18,18 @@ watchlist for roles that aren't open yet.
 
 ```bash
 npm install
-cp .env.example .env   # fill in ANTHROPIC_API_KEY and TAVILY_API_KEY
+cp .env.example .env   # fill in DATABASE_URL, ANTHROPIC_API_KEY, TAVILY_API_KEY
 npx prisma migrate dev --name init
 npm run dev
 ```
 
 Open http://localhost:3000, go to **Settings** and upload your CV as a PDF.
 
-### Getting free API keys
+### Getting free API keys / DB
 
+- **Neon** (Postgres, used for both local dev and production):
+  https://neon.tech — sign up free (no card), create a project, copy the
+  connection string it shows you into `DATABASE_URL`.
 - **Anthropic**: https://console.anthropic.com — required for tailoring/cover
   letters/prep/ATS/discovery. (Paid, but usage for a personal tool like this is
   cheap — a few cents per generation.)
@@ -34,24 +37,36 @@ Open http://localhost:3000, go to **Settings** and upload your CV as a PDF.
   (~1000 searches/month), no card required. Used for company research and
   role discovery.
 
-## Deploying
+## Deploying to Vercel
 
-The app is a single Next.js project — deploy to Vercel (or Render/Railway).
+The repo is already pushed to GitHub. This is the click-through path (no
+Vercel CLI/token needed):
 
-1. Switch the DB to Postgres for production: in `prisma/schema.prisma` change
-   `provider = "sqlite"` to `provider = "postgresql"`, then run
-   `npx prisma migrate dev` once against a free Postgres instance (e.g.
-   [Neon](https://neon.tech), no card required for the free tier) to
-   regenerate migrations, and set `DATABASE_URL` to that instance's
-   connection string in your host's environment variables.
-2. Set `ANTHROPIC_API_KEY` and `TAVILY_API_KEY` as environment variables on
-   your host.
-3. Deploy. Run `npx prisma migrate deploy` as part of your build/release step
-   so the production database schema stays in sync.
+1. **Database**: create a free Neon project at https://neon.tech, copy its
+   connection string (looks like `postgresql://user:pass@host/db?sslmode=require`).
+2. Go to https://vercel.com/new, choose **Import Git Repository**, and pick
+   this repo (`haris3545/jobtest`). Set the branch to
+   `claude/job-tracker-cv-dashboard-6k07po` (or merge it into `main` first if
+   you'd rather deploy from there — Vercel defaults to the repo's default
+   branch).
+3. Framework preset should auto-detect as **Next.js** — leave build settings
+   as default (the repo's `npm run build` already runs
+   `prisma migrate deploy` before `next build`, so the database schema is
+   created/updated automatically on every deploy).
+4. Under **Environment Variables**, add:
+   - `DATABASE_URL` — the Neon connection string from step 1
+   - `ANTHROPIC_API_KEY` — from console.anthropic.com
+   - `TAVILY_API_KEY` — from tavily.com
+   - (optional) `RESEND_API_KEY` / `REMINDER_EMAIL_TO` if you wire up email
+     reminders later
+5. Click **Deploy**. First deploy applies the initial migration to your Neon
+   DB automatically.
+6. Once live, open the deployed URL → **Settings** → upload your CV PDF to
+   get started.
 
 There is no authentication — the app is meant for single-user personal use.
-Keep the deployment URL private, or add a password gate (e.g. Vercel
-Deployment Protection) if it's ever exposed publicly.
+Keep the deployment URL private, or turn on **Vercel Deployment Protection**
+(Project Settings → Deployment Protection) if you want a password gate.
 
 ## Features
 
