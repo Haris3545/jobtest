@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// status values: DISCOVERED | SAVED | APPLIED | INTERVIEW | OFFER | REJECTED | WITHDRAWN
+// (plain String, not a Prisma enum, so this schema works unchanged on SQLite in dev
+// and Postgres in production)
+
+model Job {
+  id             String    @id @default(cuid())
+  url            String
+  title          String
+  company        String
+  location       String?
+  source         String? // linkedin | indeed | brightnetwork | company | other
+  description    String?
+  salary         String?
+  openDate       DateTime?
+  closingDate    DateTime?
+  status         String    @default("SAVED")
+  notes          String?
+  atsScore       Int?
+  atsDetail      String? // JSON: matched/missing keywords
+  nextSteps      String? // generated checklist (markdown)
+  companyBrief   String? // generated company research (markdown)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  cvVersions     CvVersion[]
+  coverLetters   CoverLetter[]
+  reminders      Reminder[]
+}
+
+model CvMaster {
+  id            String   @id @default(cuid())
+  fileName      String   @default("haris_khan_cv.pdf")
+  fileData      Bytes
+  mimeType      String   @default("application/pdf")
+  extractedText String?
+  uploadedAt    DateTime @default(now())
+}
+
+model CvVersion {
+  id            String   @id @default(cuid())
+  jobId         String
+  job           Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  version       Int
+  fileData      Bytes
+  extractedText String?
+  changeSummary String?
+  createdAt     DateTime @default(now())
+}
+
+model CoverLetter {
+  id        String   @id @default(cuid())
+  jobId     String
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  version   Int
+  content   String
+  fileData  Bytes?
+  createdAt DateTime @default(now())
+}
+
+model Reminder {
+  id        String   @id @default(cuid())
+  jobId     String
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  remindAt  DateTime
+  message   String
+  dismissed Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model WatchTarget {
+  id              String    @id @default(cuid())
+  label           String
+  roleQuery       String // e.g. "software engineering graduate scheme"
+  targetStartYear Int? // e.g. 2027
+  region          String?
+  notes           String?
+  cadenceDays     Int       @default(7)
+  active          Boolean   @default(true)
+  lastCheckedAt   DateTime?
+  createdAt       DateTime  @default(now())
+
+  findings WatchFinding[]
+}
+
+model WatchFinding {
+  id            String      @id @default(cuid())
+  watchTargetId String
+  watchTarget   WatchTarget @relation(fields: [watchTargetId], references: [id], onDelete: Cascade)
+  title         String
+  url           String
+  snippet       String?
+  status        String      @default("NEW") // NEW | SEEN | DISMISSED | IMPORTED
+  importedJobId String?
+  foundAt       DateTime    @default(now())
+}

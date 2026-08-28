@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Job Tracker Capture",
+  "version": "1.0.0",
+  "description": "Send the current job listing tab to your Job Tracker dashboard with one click.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "storage"],
+  "icons": {}
+}

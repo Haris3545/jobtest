@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font-family: sans-serif; width: 280px; padding: 12px; }
+      input { width: 100%; box-sizing: border-box; padding: 6px; margin-bottom: 8px; }
+      button { width: 100%; padding: 8px; background: #171717; color: white; border: none; border-radius: 6px; cursor: pointer; }
+      #status { font-size: 12px; margin-top: 8px; color: #555; }
+    </style>
+  </head>
+  <body>
+    <h3 style="margin-top:0">Job Tracker</h3>
+    <label style="font-size:12px">Dashboard URL (set once)</label>
+    <input id="baseUrl" placeholder="https://your-app.vercel.app" />
+    <button id="send">Send this tab to tracker</button>
+    <div id="status"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
