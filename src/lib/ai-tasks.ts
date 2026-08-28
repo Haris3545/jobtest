@@ -1,6 +1,6 @@
 import { askClaude, askClaudeJSON } from "./anthropic";
 import { tavilySearch, TavilyResult } from "./tavily";
-import { CvContent } from "./pdf";
+import type { CvContent } from "./pdf-render";
 
 export async function tailorCvContent(params: {
   masterCvText: string;

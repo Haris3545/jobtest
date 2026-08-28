@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { extractPdfText } from "@/lib/pdf";
+import { extractPdfText } from "@/lib/pdf-extract";
 
 export async function GET() {
   const master = await prisma.cvMaster.findFirst({ orderBy: { uploadedAt: "desc" } });

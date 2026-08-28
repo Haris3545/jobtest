@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { tailorCvContent } from "@/lib/ai-tasks";
-import { renderCvPdf, CvContent } from "@/lib/pdf";
+import { renderCvPdf, CvContent } from "@/lib/pdf-render";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

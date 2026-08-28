@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { renderCvPdf, CvContent } from "@/lib/pdf";
+import { renderCvPdf, CvContent } from "@/lib/pdf-render";
 
 export async function GET(
   req: NextRequest,

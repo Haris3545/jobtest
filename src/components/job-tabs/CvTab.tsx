@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { CvContent } from "@/lib/pdf";
+import type { CvContent } from "@/lib/pdf-render";
 
 interface VersionMeta {
   id: string;

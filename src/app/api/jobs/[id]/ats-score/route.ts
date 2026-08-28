@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { scoreAts } from "@/lib/ai-tasks";
-import { CvContent } from "@/lib/pdf";
+import type { CvContent } from "@/lib/pdf-render";
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {

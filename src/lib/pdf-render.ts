@@ -1,15 +1,5 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
-// pdf-parse's package entry runs a debug script when required directly in
-// some bundlers; importing the internal lib path avoids that.
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdfParse = require("pdf-parse/lib/pdf-parse.js");
-
-export async function extractPdfText(buffer: Buffer): Promise<string> {
-  const data = await pdfParse(buffer);
-  return data.text as string;
-}
-
 /**
  * Builds a clean, consistently formatted CV PDF from structured sections.
  *
