@@ -28,6 +28,7 @@ export default function WatchlistPage() {
   const [checking, setChecking] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ label: "", roleQuery: "", targetStartYear: "2027", region: "UK" });
+  const [error, setError] = useState<string | null>(null);
 
   function load() {
     fetch("/api/watch")
@@ -38,21 +39,39 @@ export default function WatchlistPage() {
 
   async function addTarget() {
     if (!form.label || !form.roleQuery) return;
-    await fetch("/api/watch", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    setForm({ label: "", roleQuery: "", targetStartYear: "2027", region: "UK" });
-    setShowAdd(false);
-    load();
+    setError(null);
+    try {
+      const res = await fetch("/api/watch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Failed to add watch target");
+        return;
+      }
+      setForm({ label: "", roleQuery: "", targetStartYear: "2027", region: "UK" });
+      setShowAdd(false);
+      load();
+    } catch {
+      setError("Failed to add watch target — check your connection.");
+    }
   }
 
   async function checkNow(id: string) {
     setChecking(id);
+    setError(null);
     try {
-      await fetch(`/api/watch/${id}/check`, { method: "POST" });
+      const res = await fetch(`/api/watch/${id}/check`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Check failed");
+        return;
+      }
       load();
+    } catch {
+      setError("Check failed — check your connection.");
     } finally {
       setChecking(null);
     }
@@ -91,6 +110,8 @@ export default function WatchlistPage() {
           + Add watch
         </button>
       </div>
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       {showAdd && (
         <div className="bg-white rounded-xl border p-4 flex flex-wrap gap-3 items-end">

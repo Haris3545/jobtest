@@ -28,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-neutral-50 text-neutral-900">
         <NavBar />
         <ReminderBanner />
-        <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-6">{children}</main>
+        <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-6">{children}</main>
       </body>
     </html>
   );

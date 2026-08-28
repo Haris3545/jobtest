@@ -36,6 +36,7 @@ export default function AddJobModal({ onClose, onCreated }: Props) {
   const [scanning, setScanning] = useState(false);
   const [scanMsg, setScanMsg] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   async function scan() {
     if (!form.url) return;
@@ -74,14 +75,22 @@ export default function AddJobModal({ onClose, onCreated }: Props) {
   async function save() {
     if (!form.title || !form.company || !form.url) return;
     setSaving(true);
+    setSaveError(null);
     try {
-      await fetch("/api/jobs", {
+      const res = await fetch("/api/jobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      const data = await res.json();
+      if (!res.ok) {
+        setSaveError(data.error ?? "Failed to save job");
+        return;
+      }
       onCreated();
       onClose();
+    } catch {
+      setSaveError("Failed to save job — check your connection and try again.");
     } finally {
       setSaving(false);
     }
@@ -136,6 +145,8 @@ export default function AddJobModal({ onClose, onCreated }: Props) {
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
         </div>
+
+        {saveError && <p className="text-sm text-red-600">{saveError}</p>}
 
         <div className="flex justify-end gap-2 pt-2">
           <button onClick={onClose} className="px-3 py-2 text-sm rounded-md border">

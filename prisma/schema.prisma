@@ -28,6 +28,7 @@ model Job {
   atsDetail      String? // JSON: matched/missing keywords
   nextSteps      String? // generated checklist (markdown)
   companyBrief   String? // generated company research (markdown)
+  lastScannedAt  DateTime? // last time the original listing URL was re-checked
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 

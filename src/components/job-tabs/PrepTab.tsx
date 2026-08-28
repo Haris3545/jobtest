@@ -18,6 +18,8 @@ export default function PrepTab({ job, onUpdated }: { job: Job; onUpdated: () =>
         return;
       }
       onUpdated();
+    } catch {
+      setError("Failed to generate prep brief — check your connection and try again.");
     } finally {
       setLoading(false);
     }

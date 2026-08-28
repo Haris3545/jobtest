@@ -29,6 +29,8 @@ export default function AtsTab({ job, onUpdated }: { job: Job; onUpdated: () => 
       }
       setResult(data);
       onUpdated();
+    } catch {
+      setError("Failed to score CV — check your connection and try again.");
     } finally {
       setLoading(false);
     }

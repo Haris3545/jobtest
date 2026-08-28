@@ -41,6 +41,8 @@ export default function CvTab({ jobId }: { jobId: string }) {
         return;
       }
       load(data.id);
+    } catch {
+      setError("Failed to generate CV — check your connection and try again.");
     } finally {
       setGenerating(false);
     }

@@ -39,6 +39,8 @@ export default function CoverLetterTab({ jobId }: { jobId: string }) {
         return;
       }
       load(data.id);
+    } catch {
+      setError("Failed to generate cover letter — check your connection and try again.");
     } finally {
       setGenerating(false);
     }

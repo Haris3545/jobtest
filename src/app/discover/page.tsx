@@ -39,6 +39,8 @@ export default function DiscoverPage() {
         return;
       }
       setResults(data);
+    } catch {
+      setError("Search failed — check your connection and try again.");
     } finally {
       setLoading(false);
     }
