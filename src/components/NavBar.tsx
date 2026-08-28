@@ -14,7 +14,7 @@ const links = [
 export default function NavBar() {
   const pathname = usePathname();
   return (
-    <header className="border-b border-neutral-200 bg-white sticky top-0 z-10">
+    <header className="glass-nav sticky top-0 z-10">
       <nav className="max-w-5xl mx-auto px-4 h-14 flex items-center gap-1">
         <span className="font-medium text-neutral-800 mr-4">Job Tracker</span>
         {links.map((l) => {

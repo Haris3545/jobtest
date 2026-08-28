@@ -72,7 +72,7 @@ export default function DiscoverPage() {
         </p>
       </div>
 
-      <div className="bg-white rounded-xl border p-4 flex flex-wrap gap-3 items-end">
+      <div className="glass-card p-4 flex flex-wrap gap-3 items-end">
         <div className="flex-1 min-w-[200px]">
           <label className="block text-xs font-medium text-neutral-500 mb-1">Job type / role</label>
           <input
@@ -111,7 +111,7 @@ export default function DiscoverPage() {
 
       <div className="grid gap-3">
         {results.map((c) => (
-          <div key={c.url} className="bg-white rounded-xl border p-4 flex items-start justify-between gap-4">
+          <div key={c.url} className="glass-card p-4 flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-medium">{c.title}</h3>

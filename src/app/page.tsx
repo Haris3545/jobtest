@@ -66,7 +66,7 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="bg-white rounded-xl border overflow-hidden">
+      <div className="glass-card overflow-hidden">
         {loading ? (
           <p className="p-6 text-sm text-neutral-500">Loading…</p>
         ) : filtered.length === 0 ? (

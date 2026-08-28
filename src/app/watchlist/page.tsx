@@ -114,7 +114,7 @@ export default function WatchlistPage() {
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       {showAdd && (
-        <div className="bg-white rounded-xl border p-4 flex flex-wrap gap-3 items-end">
+        <div className="glass-card p-4 flex flex-wrap gap-3 items-end">
           <div>
             <label className="block text-xs font-medium text-neutral-500 mb-1">Label</label>
             <input
@@ -156,7 +156,7 @@ export default function WatchlistPage() {
 
       <div className="space-y-3">
         {targets.map((t) => (
-          <div key={t.id} className="bg-white rounded-xl border p-4 space-y-2">
+          <div key={t.id} className="glass-card p-4 space-y-2">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium">{t.label}</h3>

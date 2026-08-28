@@ -49,7 +49,7 @@ export default function CoverLetterTab({ jobId }: { jobId: string }) {
   const selectedLetter = letters.find((l) => l.id === selected);
 
   return (
-    <div className="bg-white rounded-xl border p-5 space-y-4">
+    <div className="glass-card p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h3 className="font-medium">Cover letter versions</h3>

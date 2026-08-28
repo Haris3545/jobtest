@@ -37,7 +37,7 @@ export default function AtsTab({ job, onUpdated }: { job: Job; onUpdated: () => 
   }
 
   return (
-    <div className="bg-white rounded-xl border p-5 space-y-4">
+    <div className="glass-card p-5 space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-medium">ATS keyword match</h3>
         <button

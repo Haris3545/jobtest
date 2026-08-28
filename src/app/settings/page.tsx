@@ -46,7 +46,7 @@ export default function SettingsPage() {
     <div className="space-y-6 max-w-xl">
       <h1 className="text-xl font-semibold">Settings</h1>
 
-      <div className="bg-white rounded-xl border p-5 space-y-3">
+      <div className="glass-card p-5 space-y-3">
         <h3 className="font-medium">Master CV</h3>
         <p className="text-sm text-neutral-500">
           Upload your CV as a PDF once. It&apos;s used as the source of truth for every tailored CV and
@@ -70,7 +70,7 @@ export default function SettingsPage() {
         {error && <p className="text-xs text-red-600">{error}</p>}
       </div>
 
-      <div className="bg-white rounded-xl border p-5 space-y-2 text-sm text-neutral-600">
+      <div className="glass-card p-5 space-y-2 text-sm text-neutral-600">
         <h3 className="font-medium text-neutral-900">Browser deadline reminders</h3>
         <p>
           When jobs are closing within 14 days, a banner appears and (if you allow notifications) a

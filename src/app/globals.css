@@ -4,3 +4,15 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+
+@layer components {
+  /* Subtle frosted-glass card: needs a non-flat page background behind it
+     (see body in layout.tsx) or the translucency has nothing to show. */
+  .glass-card {
+    @apply relative rounded-xl border border-white/60 bg-white/70 shadow-sm backdrop-blur-md;
+  }
+
+  .glass-nav {
+    @apply border-b border-white/50 bg-white/70 backdrop-blur-md;
+  }
+}

@@ -51,7 +51,7 @@ export default function CvTab({ jobId }: { jobId: string }) {
   const selectedVersion = versions.find((v) => v.id === selected);
 
   return (
-    <div className="bg-white rounded-xl border p-5 space-y-4">
+    <div className="glass-card p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h3 className="font-medium">Tailored CV versions</h3>

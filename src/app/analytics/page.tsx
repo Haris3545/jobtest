@@ -16,7 +16,7 @@ interface Analytics {
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-white rounded-xl border p-4">
+    <div className="glass-card p-4">
       <div className="text-2xl font-semibold">{value}</div>
       <div className="text-xs text-neutral-500">{label}</div>
     </div>
@@ -54,7 +54,7 @@ export default function AnalyticsPage() {
         <Stat label="Avg ATS score" value={data.avgAtsScore != null ? `${data.avgAtsScore}%` : "—"} />
       </div>
 
-      <div className="bg-white rounded-xl border p-5">
+      <div className="glass-card p-5">
         <h3 className="font-medium mb-3">By status</h3>
         <div className="space-y-2">
           {Object.entries(data.byStatus).map(([status, count]) => (

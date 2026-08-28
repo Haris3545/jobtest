@@ -180,7 +180,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       </div>
       {rescanNote && <p className="text-xs text-neutral-500">{rescanNote}</p>}
 
-      <section className="bg-white rounded-xl border p-5 space-y-4">
+      <section className="glass-card p-5 space-y-4">
         <h2 className="text-sm font-semibold text-neutral-700">Details</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>

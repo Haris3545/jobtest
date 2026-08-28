@@ -45,13 +45,13 @@ export default function PrepTab({ job, onUpdated }: { job: Job; onUpdated: () =>
       )}
 
       {job.nextSteps && (
-        <div className="bg-white rounded-xl border p-5">
+        <div className="glass-card p-5">
           <h3 className="font-medium mb-2">Next steps</h3>
           <pre className="whitespace-pre-wrap text-sm font-sans">{job.nextSteps}</pre>
         </div>
       )}
       {job.companyBrief && (
-        <div className="bg-white rounded-xl border p-5">
+        <div className="glass-card p-5">
           <h3 className="font-medium mb-2">Company & interview research</h3>
           <pre className="whitespace-pre-wrap text-sm font-sans">{job.companyBrief}</pre>
         </div>
