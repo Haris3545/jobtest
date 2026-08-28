@@ -124,6 +124,40 @@ Return ONLY: { "nextSteps": string, "companyBrief": string }`;
   return askClaudeJSON<PrepBriefResult>({ prompt, maxTokens: 2500 });
 }
 
+export async function estimatePreviousCycleDates(params: {
+  jobTitle: string;
+  company: string;
+}): Promise<string | null> {
+  let researchNotes = "";
+  try {
+    const results = await tavilySearch(
+      `${params.company} ${params.jobTitle} graduate scheme application deadline dates`,
+      { maxResults: 6 }
+    );
+    researchNotes = results
+      .map((r) => `- ${r.title} (${r.url}): ${r.content.slice(0, 400)}`)
+      .join("\n");
+  } catch {
+    return null;
+  }
+  if (!researchNotes.trim()) return null;
+
+  const prompt = `This job listing for "${params.jobTitle}" at "${params.company}" doesn't have confirmed open/close dates for the current application cycle yet.
+
+Raw web search snippets (may reference an earlier year's cycle for the same or a similar role at this company):
+${researchNotes}
+
+Task: If you can find when a previous cycle (an earlier year) for this same role/scheme opened and/or closed, summarize it as a single short sentence in this exact format, using the year you actually found:
+"<year> dates were: opened <date>, closed <date>" (omit whichever of opened/closed you don't have).
+If you cannot find any previous-cycle date information in the snippets above, return exactly: null
+
+Return ONLY that sentence, or the word null — nothing else, no markdown.`;
+  const raw = await askClaude({ prompt, maxTokens: 200 });
+  const cleaned = raw.trim();
+  if (!cleaned || cleaned.toLowerCase() === "null") return null;
+  return cleaned;
+}
+
 export interface DiscoveredRole {
   title: string;
   company: string;

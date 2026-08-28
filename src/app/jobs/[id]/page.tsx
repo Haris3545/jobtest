@@ -34,6 +34,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [saving, setSaving] = useState(false);
   const [rescanning, setRescanning] = useState(false);
   const [rescanNote, setRescanNote] = useState<string | null>(null);
+  const [estimating, setEstimating] = useState(false);
+  const [estimateError, setEstimateError] = useState<string | null>(null);
 
   function load() {
     fetch(`/api/jobs/${id}`)
@@ -96,7 +98,30 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     }
   }
 
+  async function estimateDates() {
+    setEstimating(true);
+    setEstimateError(null);
+    try {
+      const res = await fetch(`/api/jobs/${id}/estimate-dates`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        setEstimateError(data.error ?? "Failed to look up previous dates");
+        return;
+      }
+      if (!data.historicalDatesNote) {
+        setEstimateError("Couldn't find previous-cycle dates for this role online.");
+      }
+      load();
+    } catch {
+      setEstimateError("Failed to look up previous dates — check your connection.");
+    } finally {
+      setEstimating(false);
+    }
+  }
+
   if (!job) return <p className="text-sm text-neutral-500">Loading…</p>;
+
+  const datesMissing = !job.openDate || !job.closingDate;
 
   return (
     <div className="space-y-4">
@@ -186,6 +211,29 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             />
           </div>
         </div>
+
+        {datesMissing && (
+          <div className="bg-neutral-50 border rounded-md p-3 space-y-2">
+            <p className="text-xs text-neutral-500">
+              This cycle&apos;s dates aren&apos;t fully known yet.{" "}
+              {job.historicalDatesNote
+                ? "Here's what was found for a previous cycle, as a reference point:"
+                : "Look up when a previous cycle for this role ran, as a reference point."}
+            </p>
+            {job.historicalDatesNote && (
+              <p className="text-sm font-medium text-neutral-700">{job.historicalDatesNote}</p>
+            )}
+            <button
+              onClick={estimateDates}
+              disabled={estimating}
+              className="px-2.5 py-1 text-xs rounded-md border disabled:opacity-40"
+            >
+              {estimating ? "Searching…" : job.historicalDatesNote ? "Search again" : "Find previous years' dates"}
+            </button>
+            {estimateError && <p className="text-xs text-red-600">{estimateError}</p>}
+          </div>
+        )}
+
         <div>
           <label className="block text-xs font-medium text-neutral-500 mb-1">Description</label>
           <textarea

@@ -12,29 +12,30 @@ datasource db {
 // and Postgres in production)
 
 model Job {
-  id             String    @id @default(cuid())
-  url            String
-  title          String
-  company        String
-  location       String?
-  source         String? // linkedin | indeed | brightnetwork | company | other
-  description    String?
-  salary         String?
-  openDate       DateTime?
-  closingDate    DateTime?
-  status         String    @default("SAVED")
-  notes          String?
-  atsScore       Int?
-  atsDetail      String? // JSON: matched/missing keywords
-  nextSteps      String? // generated checklist (markdown)
-  companyBrief   String? // generated company research (markdown)
-  lastScannedAt  DateTime? // last time the original listing URL was re-checked
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id                  String    @id @default(cuid())
+  url                 String
+  title               String
+  company             String
+  location            String?
+  source              String? // linkedin | indeed | brightnetwork | company | other
+  description         String?
+  salary              String?
+  openDate            DateTime?
+  closingDate         DateTime?
+  status              String    @default("SAVED")
+  notes               String?
+  atsScore            Int?
+  atsDetail           String? // JSON: matched/missing keywords
+  nextSteps           String? // generated checklist (markdown)
+  companyBrief        String? // generated company research (markdown)
+  lastScannedAt       DateTime? // last time the original listing URL was re-checked
+  historicalDatesNote String? // e.g. "2026 dates were: opened 3 Mar, closed 10 Jun" — used when this cycle's dates aren't announced yet
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
-  cvVersions     CvVersion[]
-  coverLetters   CoverLetter[]
-  reminders      Reminder[]
+  cvVersions   CvVersion[]
+  coverLetters CoverLetter[]
+  reminders    Reminder[]
 }
 
 model CvMaster {

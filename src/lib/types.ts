@@ -45,6 +45,7 @@ export interface Job {
   nextSteps: string | null;
   companyBrief: string | null;
   lastScannedAt: string | null;
+  historicalDatesNote: string | null;
   createdAt: string;
   updatedAt: string;
 }
